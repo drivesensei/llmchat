@@ -1,4 +1,9 @@
 export type Answer = {
-  isCorrect: boolean,
+  id: number
+  text: string
+}
+
+export type AnswerLLM = {
+  id?: string
   text: string
 }

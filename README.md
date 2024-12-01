@@ -1,50 +1,21 @@
-# React + TypeScript + Vite
+# Oli
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A vite + reactjs project to talk to an LLM of your choice.
 
-Currently, two official plugins are available:
+Currently it supports ollama with the llama3.2 model
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### Setup
 
-## Expanding the ESLint configuration
+1. [Setup](https://ollama.com/download/mac) ollama in your local machine
+2. Download llama3.2 by doing `ollama pull llama3.2` on your console
+3. Run ollama API with `ollama serve`
+4. Run `npm install` and `npm run dev` to run the project
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+### Tech stack.
 
-- Configure the top-level `parserOptions` property like this:
+Vite
+ReactJS
+TailwindCSS + DaisyUI
+Signals React from @preact
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
-
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
-
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
-
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+Conversations are persisted in browser's localstorage

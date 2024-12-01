@@ -1,7 +1,7 @@
-import { signal } from '@preact/signals-react';
+import { signal } from '@preact/signals-react'
 
-export const sidebarOpen = signal(false);
+export const sidebarOpen = signal(false)
 
 export const toggleSidebar = () => {
-  sidebarOpen.value = !sidebarOpen.value;
-};
+  sidebarOpen.value = !sidebarOpen.value
+}

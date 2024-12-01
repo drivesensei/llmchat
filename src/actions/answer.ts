@@ -1,31 +1,38 @@
-import { effect } from '@preact/signals-react';
+import { effect } from '@preact/signals-react'
 
-import type { Answer } from '../types/answers';
-
-import { activeQuestion } from '../store/question';
+import type { Answer } from '../types/answers'
 import {
   answers,
   selectedAnswer,
   shouldShowIfAnswerIsCorrect,
-} from '../store/answer';
+} from '../store/answer'
 
-export const setAnswers = (ans: Answer[]) => {
-  if (!activeQuestion.value?.id) return;
-  const refAnswers = answers.value;
-  refAnswers[activeQuestion.value.id] = ans;
+export const setAnswer = (ans: Answer) => {
+  const refAnswers = answers.value
+  refAnswers[ans.id] = ans
 
   answers.value = {
     ...refAnswers,
-  };
-};
+  }
+}
 
 export const setSelectedAnswer = (a: Answer) => {
-  setToggleAnswerMessage(false);
-  selectedAnswer.value = a;
-};
+  setToggleAnswerMessage(false)
+  selectedAnswer.value = a
+}
 
 export const setToggleAnswerMessage = (v: boolean = true) => {
-  shouldShowIfAnswerIsCorrect.value = v;
-};
+  shouldShowIfAnswerIsCorrect.value = v
+}
 
-effect(() => console.info(answers.value, 'ans'));
+export function getAnswer(answerId: number) {
+  return answers.value[answerId]
+}
+
+effect(() => {
+  if (Object.keys(answers.value)?.length > 0) {
+    const commitAnswers = JSON.stringify(answers.value)
+
+    localStorage.setItem('oli:answers', commitAnswers)
+  }
+})

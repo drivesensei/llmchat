@@ -1,36 +1,52 @@
-import { Menu, X } from 'lucide-react';
-import Questions from './question';
+import { Menu, X } from 'lucide-react'
+import { memo } from 'react'
 
-import { sidebarOpen, toggleSidebar } from '../store/sidebar';
-import { createQuestion } from '../actions/question'
+import { addConversation } from '../actions/conversation'
 
-export default function Sidebar() {
-  return <>
+import { sidebarOpen, toggleSidebar } from '@/store/sidebar'
+import Conversations from '@/components/conversation'
+import Button from '@/components/Button/button'
+
+function Sidebar() {
+  return (
+    <>
       {/* Mobile sidebar toggle */}
-      <button
-        className="fixed top-4 left-4 z-50 lg:hidden"
-        onClick={toggleSidebar}
-      >
-        {sidebarOpen.value ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-      </button>
+      <div className="fixed top-4 left-4 z-50 lg:hidden">
+        <Button
+          classes=""
+          onClick={toggleSidebar}
+          aria={{ label: 'Open menu' }}
+        >
+          {sidebarOpen.value ? (
+            <X className="h-6 w-6" />
+          ) : (
+            <Menu className="h-6 w-6" />
+          )}
+        </Button>
+      </div>
 
       <aside
-        className={`${
-          sidebarOpen.value ? 'translate-x-0' : '-translate-x-full'
-        } scroll-y fixed inset-y-0 left-0 z-40 w-64 transform bg-white shadow-lg transition-transform duration-300 ease-in-out lg:static lg:translate-x-0 border-r-2`}
+        className={`fixed inset-y-0 left-0 z-40 w-64 bg-white shadow-lg border-r-2 lg:static transition-transform duration-300 ease-in-out ${
+          sidebarOpen.value
+            ? 'translate-x-0'
+            : '-translate-x-full'
+        } fixed inset-y-0 left-0 z-40 w-64 transform bg-white shadow-lg transition-transform duration-300 ease-in-out lg:static lg:translate-x-0 border-r-2 overflow-y-auto`}
       >
         <div className="p-4">
-          <button className="btn btn-primary w-full" onClick={() => {
-        console.info('creating...');
-        createQuestion()
-          }}>New Q/A</button>
+          <Button
+            classes="btn btn-primary btn-block"
+            onClick={() => addConversation()}
+          >
+            New Conversation
+          </Button>
         </div>
 
         <div className="grid items-center">
-          <Questions />
+          <Conversations />
         </div>
       </aside>
     </>
+  )
 }
-    
-  
+
+export default memo(Sidebar)

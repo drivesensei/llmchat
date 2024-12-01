@@ -1,4 +1,5 @@
-import MainContent from './components/main-content.tsx'
+import MainContent from '@/components/main-content'
 
-export default () => 
-    <MainContent />
+const App = () => <MainContent />
+
+export default App
