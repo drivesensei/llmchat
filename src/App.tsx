@@ -1,4 +1,4 @@
-import MainContent from '@/components/main-content'
+import MainContent from './components/main-content'
 
 const App = () => <MainContent />
 

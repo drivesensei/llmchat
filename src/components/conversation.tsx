@@ -1,8 +1,7 @@
 import { conversations } from '../store/conversation'
 import { setActiveConversation } from '../actions/conversation'
-
-import Button from '@/components/Button/button'
-import type { Conversation } from '@/types/conversation'
+import Button from '../components/Button/button'
+import type { Conversation } from '../types/conversation'
 
 export default function Conversations() {
   return conversations.value.map(

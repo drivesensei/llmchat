@@ -1,6 +1,6 @@
 import { signal } from '@preact/signals-react'
 
-import type { Conversation } from '@/types/conversation'
+import type { Conversation } from '../types/conversation'
 
 const getConversations = () => {
   const str = localStorage.getItem('oli:conversations')

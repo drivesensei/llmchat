@@ -1,23 +1,28 @@
 import { Menu, X } from 'lucide-react'
-import { memo } from 'react'
+import { FC, memo } from 'react'
 
 import { addConversation } from '../actions/conversation'
+// import { sidebarOpen, toggleSidebar } from '../store/sidebar'
 
-import { sidebarOpen, toggleSidebar } from '@/store/sidebar'
-import Conversations from '@/components/conversation'
-import Button from '@/components/Button/button'
+import Conversations from './conversation'
+import Button from './Button/button'
 
-function Sidebar() {
+type Props = {
+  open: boolean
+  onToggle: () => void
+}
+
+const Sidebar: FC<Props> = ({ open, onToggle }: Props) => {
   return (
     <>
       {/* Mobile sidebar toggle */}
       <div className="fixed top-4 left-4 z-50 lg:hidden">
         <Button
           classes=""
-          onClick={toggleSidebar}
+          onClick={onToggle}
           aria={{ label: 'Open menu' }}
         >
-          {sidebarOpen.value ? (
+          {open ? (
             <X className="h-6 w-6" />
           ) : (
             <Menu className="h-6 w-6" />
@@ -27,9 +32,7 @@ function Sidebar() {
 
       <aside
         className={`fixed inset-y-0 left-0 z-40 w-64 bg-white shadow-lg border-r-2 lg:static transition-transform duration-300 ease-in-out ${
-          sidebarOpen.value
-            ? 'translate-x-0'
-            : '-translate-x-full'
+          open ? 'translate-x-0' : '-translate-x-full'
         } fixed inset-y-0 left-0 z-40 w-64 transform bg-white shadow-lg transition-transform duration-300 ease-in-out lg:static lg:translate-x-0 border-r-2 overflow-y-auto`}
       >
         <div className="p-4">

@@ -1,8 +1,8 @@
 import { effect } from '@preact/signals-react'
 
-import type { Question } from '@/types/question'
-import { questions, activeQuestion } from '@/store/question'
-import { setToggleAnswerMessage } from '@/actions/answer'
+import type { Question } from '../types/question'
+import { questions, activeQuestion } from '../store/question'
+import { setToggleAnswerMessage } from '../actions/answer'
 
 export const setActiveQuestion = (question: Question) => {
   const s: HTMLElement | null =
@@ -26,7 +26,9 @@ export const createQuestion: CreatedQuestionType = (
   return question
 }
 
-export function getQuestion(questionId: number) {
+export const getQuestion: (q: number) => Question = (
+  questionId: number,
+) => {
   const idx = questions.value.findIndex(
     (q: Question) => q.id === questionId,
   )

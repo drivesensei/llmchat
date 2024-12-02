@@ -8,14 +8,13 @@ import {
 } from '../actions/conversation'
 import { sidebarOpen } from '../store/sidebar'
 import { getAnswer, setStreamedAnswer } from '../actions/answer'
-
-import Sidebar from '@/components/sidebar'
-import ChatBubble from '@/components/ChatBubble/chat-bubble'
-import Input from '@/components/Input/input'
-import type { Answer } from '@/types/answers'
-import { createQuestion } from '@/actions/question'
-import { getAnswerFromOllama } from '@/effects/getLLMResponse'
-import { toggleSidebar } from '@/store/sidebar'
+import Sidebar from '../components/sidebar'
+import ChatBubble from '../components/ChatBubble/chat-bubble'
+import Input from '../components/Input/input'
+import type { Answer } from '../types/answers'
+import { createQuestion } from '../actions/question'
+import { getAnswerFromOllama } from '../effects/getLLMResponse'
+import { toggleSidebar } from '../store/sidebar'
 
 const MainContent = () => (
   <div className="flex h-screen overflow-hidden bg-gray-100">
@@ -45,7 +44,7 @@ const MainContent = () => (
                         getAnswer(
                           activeConversation.value?.answerIds?.[
                             index
-                          ],
+                          ] || 0,
                         )?.text ?? `loading...`
                       }
                     />

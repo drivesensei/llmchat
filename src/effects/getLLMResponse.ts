@@ -1,27 +1,31 @@
-import { Answer } from '../types/answers'
+import { fullConversationTextToFeedLLM } from '../actions/conversation'
 
 export const getAnswerFromOllama: (
   q: string,
   onPartialAnswer: (pa: string, done: boolean) => void,
-) => Promise<Answer | null> = async (
-  questionText: string,
-  onPartialAnswer,
-) => {
+) => void = async (questionText: string, onPartialAnswer) => {
   try {
     console.info('querying...', questionText)
 
+    const messages = [
+      {
+        role: 'system',
+        content:
+          'you are wizard in any topic. You keep your answers to a maximum of 2 sentences.' +
+          fullConversationTextToFeedLLM.value,
+      },
+
+      {
+        role: 'user',
+        content: questionText,
+      },
+    ]
+
+    console.info({ messages })
+
     const body = JSON.stringify({
       model: 'llama3.2',
-      messages: [
-        {
-          role: 'system',
-          content: 'you are wizard in any topic',
-        },
-        {
-          role: 'user',
-          content: questionText,
-        },
-      ],
+      messages,
       stream: true,
     })
 
@@ -47,7 +51,6 @@ export const getAnswerFromOllama: (
       const { done, value } = await reader.read()
       if (done) break
       const chunk = decoder.decode(value, { stream: true })
-      console.info({ chunk })
       const chunkJSON = JSON.parse(chunk)
 
       if (!chunk || !chunkJSON?.message?.content) continue
