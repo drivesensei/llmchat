@@ -7,14 +7,13 @@ import {
   addQuestionToActiveConversation,
 } from '../actions/conversation'
 import { sidebarOpen } from '../store/sidebar'
-import { getAnswer } from '../actions/answer'
+import { getAnswer, setStreamedAnswer } from '../actions/answer'
 
 import Sidebar from '@/components/sidebar'
 import ChatBubble from '@/components/ChatBubble/chat-bubble'
 import Input from '@/components/Input/input'
 import type { Answer } from '@/types/answers'
 import { createQuestion } from '@/actions/question'
-import { setAnswer } from '@/actions/answer'
 import { getAnswerFromOllama } from '@/effects/getLLMResponse'
 import { toggleSidebar } from '@/store/sidebar'
 
@@ -63,11 +62,15 @@ const MainContent = () => (
 const onCreateQuestion = async (text: string) => {
   const question = createQuestion(text)
   addQuestionToActiveConversation(question.id)
-  const ansPromise: Promise<Answer> = getAnswerFromOllama(text)
-  const ans: Answer = await ansPromise
-  if (!ans) return
-  setAnswer(ans)
-  addAnswerToActiveConversation(ans.id)
+
+  const an: Answer = {
+    id: Date.now(),
+    text: '',
+  }
+
+  addAnswerToActiveConversation(an.id)
+
+  getAnswerFromOllama(text, setStreamedAnswer(an))
 }
 
 export default MainContent

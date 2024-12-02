@@ -16,6 +16,14 @@ export const setAnswer = (ans: Answer) => {
   }
 }
 
+export function setStreamedAnswer(emptyAnswer: Answer) {
+  return function (partialText: string, done: boolean) {
+    if (done) return
+    emptyAnswer.text = emptyAnswer.text + partialText
+    setAnswer(emptyAnswer)
+  }
+}
+
 export const setSelectedAnswer = (a: Answer) => {
   setToggleAnswerMessage(false)
   selectedAnswer.value = a

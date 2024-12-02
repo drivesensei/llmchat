@@ -2,7 +2,11 @@ import { Answer } from '../types/answers'
 
 export const getAnswerFromOllama: (
   q: string,
-) => Promise<Answer | null> = async (questionText: string) => {
+  onPartialAnswer: (pa: string, done: boolean) => void,
+) => Promise<Answer | null> = async (
+  questionText: string,
+  onPartialAnswer,
+) => {
   try {
     console.info('querying...', questionText)
 
@@ -18,7 +22,7 @@ export const getAnswerFromOllama: (
           content: questionText,
         },
       ],
-      stream: false,
+      stream: true,
     })
 
     const requestOptions = {
@@ -34,20 +38,26 @@ export const getAnswerFromOllama: (
       requestOptions,
     )
 
-    const j = await r.json()
+    const reader = r.body?.getReader()
+    const decoder = new TextDecoder('utf-8')
 
-    const answer: Answer = {
-      id: Date.now(),
-      text: j?.message?.content ?? 'none',
+    if (!reader?.read) return null
+
+    while (true) {
+      const { done, value } = await reader.read()
+      if (done) break
+      const chunk = decoder.decode(value, { stream: true })
+      console.info({ chunk })
+      const chunkJSON = JSON.parse(chunk)
+
+      if (!chunk || !chunkJSON?.message?.content) continue
+      onPartialAnswer(chunkJSON.message.content as string, done)
     }
-    console.info({ answer })
-
-    return answer
   } catch (error: unknown) {
     console.error('error fetching answers', error)
     if (error instanceof Error) {
       console.error(error.message, error.name)
     }
-    return null
+    onPartialAnswer('', true)
   }
 }
